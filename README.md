@@ -1,7 +1,5 @@
 # Page Replacement Simulator
 
-## Descrição
-Este projeto é um simulador de substituição de páginas em memória implementado em Java. Ele permite que o usuário insira uma sequência de páginas e defina o tamanho do quadro de páginas na memória. O programa calcula o número de faltas de página ("page faults") para quatro algoritmos diferentes de substituição de páginas: FIFO (First-In, First-Out), LRU (Least Recently Used), LFU (Least Frequently Used) e Algoritmo do Relógio (Clock).
 
 ## Algoritmos Implementados
 1. **FIFO (First-In, First-Out)**: Substitui a página mais antiga no quadro.
