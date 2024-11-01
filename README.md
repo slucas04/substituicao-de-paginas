@@ -9,33 +9,12 @@ Este projeto é um simulador de substituição de páginas em memória implement
 3. **LFU (Least Frequently Used)**: Substitui a página que é menos frequentemente usada, com critério de desempate para a página mais antiga.
 4. **Algoritmo do Relógio (Clock)**: Utiliza um ponteiro circular que concede uma "segunda chance" para páginas antes de serem substituídas.
 
-## Pré-requisitos
-- Java Development Kit (JDK) instalado (versão 8 ou superior).
-- Um editor de código ou ambiente de desenvolvimento (IDE) como IntelliJ IDEA, Eclipse, ou simplesmente o terminal para compilar e executar o código.
 
-## Como Executar o Código
-1. Clone este repositório:
-   ```bash
-   git clone https://github.com/seu_usuario/page-replacement-simulator.git
-   ```
-2. Navegue até o diretório do projeto:
-   ```bash
-   cd page-replacement-simulator
-   ```
-3. Compile o arquivo Java:
-   ```bash
-   javac PageReplacementSimulator.java
-   ```
-4. Execute o programa:
-   ```bash
-   java PageReplacementSimulator
-   ```
-
-5. **Instruções de uso**:
+**Instruções de uso**:
    - Quando o programa solicitar, insira a sequência de páginas, separadas por espaços (por exemplo, `1 2 3 4 1 2 5 1 2 3 4 5`).
    - Insira o tamanho do quadro de páginas, que define a quantidade de páginas que a memória pode armazenar de uma só vez.
 
-6. O programa exibirá o número de faltas de página para cada um dos algoritmos, como no exemplo abaixo:
+O programa exibirá o número de faltas de página para cada um dos algoritmos, como no exemplo abaixo:
    ```
    Método Relógio - Faltas de página: 9
    Método LRU - Faltas de página: 8
