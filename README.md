@@ -1,4 +1,4 @@
-# Page Replacement Simulator
+# Simulador de Substituição de Páginas
 
 
 ## Algoritmos Implementados
