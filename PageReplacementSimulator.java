@@ -12,41 +12,41 @@ public class PageReplacementSimulator {
         System.out.println("Digite o tamanho do quadro de páginas:");
         int frameSize = sc.nextInt();
 
-        System.out.println("Método Relógio - Faltas de página: " + clock(pages, frameSize));
+        System.out.println("Método Relógio - Faltas de página: " + relogio(pages, frameSize));
         System.out.println("Método LRU - Faltas de página: " + lru(pages, frameSize));
         System.out.println("Método FIFO - Faltas de página: " + fifo(pages, frameSize));
         System.out.println("Método LFU - Faltas de página: " + lfu(pages, frameSize));
     }
 
-    public static int fifo(int[] pages, int frameSize) {
+    public static int fifo(int[] paginas, int tamFrame) {
         List<Integer> frames = new LinkedList<>();
-        int pageFaults = 0;
+        int faltaPaginas = 0;
 
-        for (int page : pages) {
+        for (int page : paginas) {
             if (!frames.contains(page)) {
-                if (frames.size() == frameSize) {
+                if (frames.size() == tamFrame) {
                     frames.remove(0);
                 }
                 frames.add(page);
-                pageFaults++;
+                faltaPaginas++;
             }
         }
-        return pageFaults;
+        return faltaPaginas;
     }
 
-    public static int lru(int[] pages, int frameSize) {
+    public static int lru(int[] paginas, int tamFrame) {
         Map<Integer, Integer> frames = new LinkedHashMap<>();
-        int pageFaults = 0;
+        int faltaPaginas = 0;
 
-        for (int i = 0; i < pages.length; i++) {
-            int page = pages[i];
+        for (int i = 0; i < paginas.length; i++) {
+            int page = paginas[i];
 
             if (frames.containsKey(page)) {
                 frames.remove(page);
             } else {
-                pageFaults++;
+                faltaPaginas++;
 
-                if (frames.size() == frameSize) {
+                if (frames.size() == tamFrame) {
                     int lruPage = frames.keySet().iterator().next();
                     frames.remove(lruPage);
                 }
@@ -54,88 +54,88 @@ public class PageReplacementSimulator {
 
             frames.put(page, i);
         }
-        return pageFaults;
+        return faltaPaginas;
     }
 
-    public static int lfu(int[] pages, int frameSize) {
+    public static int lfu(int[] paginas, int tamFrame) {
         Map<Integer, PageData> frames = new HashMap<>();
-        int pageFaults = 0;
-        int time = 0;
+        int faltaPaginas = 0;
+        int tempo = 0;
 
-        for (int page : pages) {
-            time++;
+        for (int page : paginas) {
+            tempo++;
 
             if (frames.containsKey(page)) {
-                frames.get(page).frequency++;
+                frames.get(page).frequencia++;
             } else {
-                pageFaults++;
+                faltaPaginas++;
 
-                if (frames.size() == frameSize) {
-                    int lfuPage = findLeastFrequentlyUsed(frames);
+                if (frames.size() == tamFrame) {
+                    int lfuPage = menosUsado(frames);
                     frames.remove(lfuPage);
                 }
 
-                frames.put(page, new PageData(1, time));
+                frames.put(page, new PageData(1, tempo));
             }
         }
-        return pageFaults;
+        return faltaPaginas;
     }
 
-    private static int findLeastFrequentlyUsed(Map<Integer, PageData> frames) {
+    private static int menosUsado(Map<Integer, PageData> frames) {
         return frames.entrySet().stream()
                 .min((entry1, entry2) -> {
-                    int freqCompare = Integer.compare(entry1.getValue().frequency, entry2.getValue().frequency);
+                    int freqCompare = Integer.compare(entry1.getValue().frequencia, entry2.getValue().frequencia);
                     if (freqCompare == 0) {
-                        return Integer.compare(entry1.getValue().time, entry2.getValue().time);
+                        return Integer.compare(entry1.getValue().tempo, entry2.getValue().tempo);
                     }
                     return freqCompare;
                 }).get().getKey();
     }
 
     static class PageData {
-        int frequency;
-        int time;
+        int frequencia;
+        int tempo;
 
-        PageData(int frequency, int time) {
-            this.frequency = frequency;
-            this.time = time;
+        PageData(int frequencia, int tempo) {
+            this.frequencia = frequencia;
+            this.tempo = tempo;
         }
     }
 
-    public static int clock(int[] pages, int frameSize) {
-        int[] frames = new int[frameSize];
-        boolean[] secondChance = new boolean[frameSize];
-        int pointer = 0;
-        int pageFaults = 0;
+    public static int relogio(int[] paginas, int tamFrame) {
+        int[] frames = new int[tamFrame];
+        boolean[] segundaChance = new boolean[tamFrame];
+        int ponteiro = 0;
+        int faltaPaginas = 0;
 
         Arrays.fill(frames, -1);
 
-        for (int page : pages) {
+        for (int page : paginas) {
             boolean hit = false;
-            for (int i = 0; i < frameSize; i++) {
+            for (int i = 0; i < tamFrame; i++) {
                 if (frames[i] == page) {
-                    secondChance[i] = true;
+                    segundaChance[i] = true;
                     hit = true;
                     break;
                 }
             }
 
             if (!hit) {
-                pageFaults++;
+                faltaPaginas++;
                 while (true) {
-                    if (!secondChance[pointer]) {
-                        frames[pointer] = page;
-                        secondChance[pointer] = false;
-                        pointer = (pointer + 1) % frameSize;
+                    if (!segundaChance[ponteiro]) {
+                        frames[ponteiro] = page;
+                        segundaChance[ponteiro] = false;
+                        ponteiro = (ponteiro + 1) % tamFrame;
                         break;
                     } else {
-                        secondChance[pointer] = false;
-                        pointer = (pointer + 1) % frameSize;
+                        segundaChance[ponteiro] = false;
+                        ponteiro = (ponteiro + 1) % tamFrame;
                     }
                 }
             }
         }
 
-        return pageFaults;
+        return faltaPaginas;
     }
 }
